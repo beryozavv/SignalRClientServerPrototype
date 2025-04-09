@@ -29,6 +29,13 @@ public class MyServerHub : Hub<IClientSample>, IServerRpcSample
         Console.WriteLine("Command sent to client with result: {0}", result);
         return result;
     }
+    
+    public async Task SendToAllClients(IEnumerable<string> userIds)
+    {
+        var requestId = Guid.NewGuid();
+        await _hubContext.Clients.All.ReceiveUserIds(new ReceiveUserIdsDto(userIds, requestId));
+        Console.WriteLine("Command {0} sent to clients", requestId);
+    }
 
     public async Task<int> ReceiveResponseFromClient(ClientResponseDto responseDto)
     {

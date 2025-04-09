@@ -22,7 +22,6 @@ class Program
             .WithAutomaticReconnect()
             .Build();
 
-        // Подписываемся на вызов метода клиента "ReceiveUserIds".
         connection.On<ReceiveUserIdsDto>(nameof(IClientSample.ReceiveUserIds), request =>
         {
             IServerRpcSample serverRpcSample = new ServerRpcClientCall(connection);
@@ -30,7 +29,6 @@ class Program
             clientSample.ReceiveUserIds(request);
         });
 
-        // Подписываемся на вызов метода клиента "ReceiveUserIds".
         connection.On<List<string>, DateTime>(nameof(IClientSample.ReceiveUserIdsSingleClient), async userIds =>
         {
             IServerRpcSample serverRpcSample = new ServerRpcClientCall(connection);
@@ -39,7 +37,6 @@ class Program
             return result;
         });
 
-        // Запускаем соединение.
         try
         {
             await connection.StartAsync();

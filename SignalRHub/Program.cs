@@ -35,13 +35,14 @@ app.MapGet("/broadcast", async (MyServerHub hubContext, string machineIds, strin
 app.MapGet("/broadcast/single", async (MyServerHub hubContext, string machineId, string userIds) =>
 {
     var userIdsList = userIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Distinct();
-    
+
     var connectionId = MyServerHub.ConnectedMachines.SingleOrDefault(c => c.Key == machineId);
 
     if (connectionId.Value != null)
     {
         var dateTime = await hubContext.SendToSingleClient(connectionId.Value, userIdsList);
-        return Results.Ok($"Список идентификаторов успешно отправлен указанному клиенту {machineId} и обработан клиентом в {dateTime}");
+        return Results.Ok(
+            $"Список идентификаторов успешно отправлен указанному клиенту {machineId} и обработан клиентом в {dateTime}");
     }
     else
     {
@@ -49,4 +50,11 @@ app.MapGet("/broadcast/single", async (MyServerHub hubContext, string machineId,
     }
 });
 
+app.MapGet("/broadcast/all", async (MyServerHub hubContext, string userIds) =>
+{
+    var userIdsList = userIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Distinct();
+
+    await hubContext.SendToAllClients(userIdsList);
+    return Results.Ok("Список идентификаторов успешно отправлен указанным клиентам");
+});
 app.Run();

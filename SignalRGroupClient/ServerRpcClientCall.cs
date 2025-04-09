@@ -15,14 +15,14 @@ public class ServerRpcClientCall : IServerRpcSample
 
     public async Task<int> ReceiveResponseFromClient(ClientResponseDto responseDto)
     {
-        using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(2)))
+        using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5)))
         {
             try
             {
                 // Передаем токен отмены в метод InvokeAsync
                 var result =
                     await _hubConnection.InvokeAsync<int>(nameof(ReceiveResponseFromClient), responseDto, cts.Token);
-                Console.WriteLine("Sent response to server by requestId = {0}", responseDto.RequestId);
+                Console.WriteLine("Sent response to server: {0}", responseDto);
                 return result;
             }
             catch (OperationCanceledException ex)

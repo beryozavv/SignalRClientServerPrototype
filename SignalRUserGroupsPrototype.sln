@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRGroupClient", "Signa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRCommonContracts", "SignalRCommonContracts\SignalRCommonContracts.csproj", "{699CE911-5900-4E81-A641-D6AD997B6395}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRMultipleConnections", "SignalRMultipleConnections\SignalRMultipleConnections.csproj", "{99008D43-9DB2-48A9-B3C8-F4E18C18B843}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{699CE911-5900-4E81-A641-D6AD997B6395}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{699CE911-5900-4E81-A641-D6AD997B6395}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{699CE911-5900-4E81-A641-D6AD997B6395}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99008D43-9DB2-48A9-B3C8-F4E18C18B843}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99008D43-9DB2-48A9-B3C8-F4E18C18B843}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99008D43-9DB2-48A9-B3C8-F4E18C18B843}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99008D43-9DB2-48A9-B3C8-F4E18C18B843}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
