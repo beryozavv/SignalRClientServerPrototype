@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Регистрируем SignalR в DI-контейнере.
 builder.Services.AddSignalR();
-builder.Services.AddScoped<MyServerHub>();
+builder.Services.AddTransient<IHubContextWrapper, HubContextWrapper>();
 
 var app = builder.Build();
 
@@ -12,7 +12,7 @@ var app = builder.Build();
 app.MapHub<MyServerHub>("/hub");
 
 // Эндпоинт для трансляции списка идентификаторов указанным клиентам.
-app.MapGet("/broadcast", async (MyServerHub hubContext, string machineIds, string userIds) =>
+app.MapGet("/broadcast", async (IHubContextWrapper hubContextWrapper, string machineIds, string userIds) =>
 {
     var machineIdsList = machineIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Distinct().ToHashSet();
     var userIdsList = userIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Distinct();
@@ -22,7 +22,7 @@ app.MapGet("/broadcast", async (MyServerHub hubContext, string machineIds, strin
 
     if (connectionIds.Any())
     {
-        await hubContext.SendToClients(connectionIds, userIdsList);
+        await hubContextWrapper.SendToClients(connectionIds, userIdsList);
         return Results.Ok("Список идентификаторов успешно отправлен указанным клиентам");
     }
     else
@@ -32,7 +32,7 @@ app.MapGet("/broadcast", async (MyServerHub hubContext, string machineIds, strin
 });
 
 // Эндпоинт для трансляции списка идентификаторов только одному указанному клиенту
-app.MapGet("/broadcast/single", async (MyServerHub hubContext, string machineId, string userIds) =>
+app.MapGet("/single", async (IHubContextWrapper hubContextWrapper, string machineId, string userIds) =>
 {
     var userIdsList = userIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Distinct();
 
@@ -40,7 +40,7 @@ app.MapGet("/broadcast/single", async (MyServerHub hubContext, string machineId,
 
     if (connectionId.Value != null)
     {
-        var dateTime = await hubContext.SendToSingleClient(connectionId.Value, userIdsList);
+        var dateTime = await hubContextWrapper.SendToSingleClient(connectionId.Value, userIdsList);
         return Results.Ok(
             $"Список идентификаторов успешно отправлен указанному клиенту {machineId} и обработан клиентом в {dateTime}");
     }
@@ -50,11 +50,9 @@ app.MapGet("/broadcast/single", async (MyServerHub hubContext, string machineId,
     }
 });
 
-app.MapGet("/broadcast/all", async (MyServerHub hubContext, string userIds) =>
+app.MapGet("/multipleConnections", async (IHubContextWrapper hubContext, string message) =>
 {
-    var userIdsList = userIds.Split(',', StringSplitOptions.RemoveEmptyEntries).Distinct();
-
-    await hubContext.SendToAllClients(userIdsList);
-    return Results.Ok("Список идентификаторов успешно отправлен указанным клиентам");
+    await hubContext.SendToAllClients(message);
+    return Results.Ok("Список идентификаторов успешно отправлен всем клиентам");
 });
 app.Run();

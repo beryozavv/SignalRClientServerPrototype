@@ -24,11 +24,11 @@ class Program
                 })
                 .Build();
 
-            connection.On<ReceiveUserIdsDto>(nameof(IClientSample.ReceiveUserIds), request =>
+            connection.On<ReceiveMessageDto>(nameof(IClientSample.ReceiveMessage), request =>
             {
                 IServerRpcSample serverRpcSample = new ServerRpcClientCall(connection);
                 IClientSample clientSample = new ClientSampleImpl(serverRpcSample, $"Mcm-{connectionNumber}");
-                clientSample.ReceiveUserIds(request);
+                clientSample.ReceiveMessage(request);
             });
 
             connections.Add(connection);

@@ -17,4 +17,10 @@
       <ProjectReference Include="..\SignalRCommonContracts\SignalRCommonContracts.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="HubContextWrapper.cs">
+        <DependentUpon>IHubContextWrapper.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

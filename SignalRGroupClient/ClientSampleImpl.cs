@@ -25,6 +25,14 @@ public class ClientSampleImpl : IClientSample
         var clientResponseDto = new ClientResponseDto(dto.RequestId, DateTime.Now, _machineId, "Success");
         await _serverRpcSample.ReceiveResponseFromClient(clientResponseDto);
     }
+    
+    public async Task ReceiveMessage(ReceiveMessageDto dto)
+    {
+        Console.WriteLine("По запросу {0} получено сообщение {1}", dto.RequestId, dto.Message);
+
+        var clientResponseDto = new ClientResponseDto(dto.RequestId, DateTime.Now, _machineId, "Success - "+dto.Message);
+        await _serverRpcSample.ReceiveResponseFromClient(clientResponseDto);
+    }
 
     /// <summary>
     /// Пример метода, который возвращает результат
